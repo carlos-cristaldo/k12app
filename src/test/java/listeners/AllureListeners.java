@@ -2,10 +2,10 @@ package listeners;
 
 import io.qameta.allure.listener.TestLifecycleListener;
 import io.qameta.allure.model.TestResult;
-import org.testng.annotations.DataProvider;
-import utilities.DriverProvider;
 import utilities.FileManager;
 import utilities.Logs;
+
+import static utilities.DriverProvider.globalDriver;
 
 public class AllureListeners implements TestLifecycleListener {
 
@@ -17,7 +17,7 @@ public class AllureListeners implements TestLifecycleListener {
 
         switch (status){
             case BROKEN, FAILED ->{
-                if (new DriverProvider().get() != null){
+                if (globalDriver.get() != null){
                     FileManager.getScreenshot();
                     FileManager.getPageSource();
                 }

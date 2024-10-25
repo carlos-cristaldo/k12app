@@ -10,6 +10,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import static utilities.DriverProvider.globalDriver;
+
 public class FileManager {
 
     private static final String screenshotsPath = "src/test/resources/screenshots";
@@ -18,7 +20,7 @@ public class FileManager {
     public static void getScreenShot(String screenshotsName) {
         Logs.debug("Taking screenshot...");
 
-        final var screenshotFile = ((TakesScreenshot) new DriverProvider().get())
+        final var screenshotFile = ((TakesScreenshot) globalDriver.get())
                 .getScreenshotAs(OutputType.FILE);
         final var path = String.format("%s/%s.png", screenshotsPath, screenshotsName);
 
@@ -43,13 +45,13 @@ public class FileManager {
 
     @Attachment(value = "screenshot", type = "image/png")
     public static byte[] getScreenshot() {
-        return ((TakesScreenshot) new DriverProvider().get())
+        return ((TakesScreenshot) globalDriver.get())
                 .getScreenshotAs(OutputType.BYTES);
     }
 
     @Attachment(value = "pagesource", type = "text/html", fileExtension = "txt")
     public static String getPageSource() {
-        final var pageSource = new DriverProvider().get().getPageSource();
+        final var pageSource = globalDriver.get().getPageSource();
         return pageSource != null ?
                 Jsoup.parse(pageSource).toString() : "Error saving pagesource....";
     }
@@ -62,7 +64,7 @@ public class FileManager {
         if (file.getParentFile().mkdirs()) {
             try {
                 final var fileWriter = new FileWriter(file);
-                final var pageSource = new DriverProvider().get().getPageSource();
+                final var pageSource = globalDriver.get().getPageSource();
                 if (pageSource != null) {
                     fileWriter.write(Jsoup.parse(pageSource).toString());
                 }
