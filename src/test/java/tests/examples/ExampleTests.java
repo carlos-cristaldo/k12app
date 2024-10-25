@@ -10,6 +10,7 @@ import model.UserData;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import static utilities.Utils.forceWait;
 import static utilities.Utils.getUser;
 
 public class ExampleTests extends BaseTest {
